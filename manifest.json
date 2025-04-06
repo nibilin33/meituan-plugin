@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Meituan 商家运营插件",
+  "description": "抓取美团商家后台关键数据，辅助生成运营策略。",
+  "version": "1.0.0",
+  "permissions": ["storage", "scripting", "activeTab"],
+  "host_permissions": [
+    "https://*.meituan.com/*"
+  ],
+  "action": { "default_popup": "index.html" },
+  "background": {
+    "service_worker": "./src/background/background.ts"
+  },
+  "options_page" : "src/optionsPage/optionsPage.html",
+  "content_scripts": [
+    {
+      "js": ["src/content/content.tsx"],
+      "matches": ["https://*.meituan.com/*"],
+      "run_at": "document_idle"
+    }
+  ]
+}
