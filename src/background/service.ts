@@ -16,12 +16,48 @@ export interface ReadabilityResult {
 
 declare global {
   interface Window {
+    injectRequestInterceptor: () => boolean;
     buildDomTree: (args: BuildDomTreeArgs) => RawDomTreeNode | null;
     turn2Markdown: (selector?: string) => string;
     parserReadability: () => ReadabilityResult | null;
   }
 }
 
+// Function to check if script is already injected
+async function isScriptInjected(tabId: number): Promise<boolean> {
+  try {
+    const results = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => Object.prototype.hasOwnProperty.call(window, 'initinjectRequestInterceptor'),
+    });
+    const result:any = results[0]?.result;
+    if (!result) {
+      return false;
+    }
+    return result.version === '1.0.0';
+  } catch (err) {
+    console.error('Failed to check script injection status:', err);
+    return false;
+  }
+}
+
+// // Function to inject the buildDomTree script
+export async function injectBuildDomTree(tabId: number) {
+  try {
+    // Check if already injected
+    const alreadyInjected = await isScriptInjected(tabId);
+    if (alreadyInjected) {
+      console.log('Scripts already injected, skipping...');
+    }
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ['request.js'],
+    });
+    console.log('Scripts successfully injected');
+  } catch (err) {
+    console.error('Failed to inject scripts:', err);
+  }
+}
 /**
  * Get the markdown content for the current page.
  * @param tabId - The ID of the tab to get the markdown content for.

@@ -1,10 +1,14 @@
 // 使用 chrome.alarms API 设置周期任务
 // 在 background.js 中监听 onAlarm，对所有 meituan.com 页面执行 content.js
 // 插件安装时自动启动定时器
+import {
+  injectBuildDomTree
+} from './service';
 
 chrome.runtime.onInstalled.addListener(() => {
     //chrome.alarms.create("periodicScrape", { periodInMinutes: 30 }); // 每 30 分钟触发一次
     console.log("插件已安装");
+    // 插入脚本
 });
 /*
   chrome.alarms.onAlarm.addListener((alarm) => {
@@ -39,7 +43,15 @@ chrome.runtime.onMessage.addListener((msg) => {
       chrome.storage.local.set({ collectedData: msg.data });
     }
 });
+// background.ts
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  console.log("Tab updated:", tabId, changeInfo, tab.url);
+  if (tabId && changeInfo.status === 'complete' && tab.url?.startsWith('http')) {
+    await injectBuildDomTree(tabId);
+  }
+});
 
+/*
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (tabId && changeInfo.status === 'complete' && tab.url?.startsWith('http')) {
     // await injectBuildDomTree(tabId);
@@ -51,7 +63,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         if (method === 'Network.responseReceived') {
           const requestId = params.requestId; // 确保路径正确
           const isTargeturl = params.response.url.startsWith('https://xczdkt200.xc.yuntaitec.com/xingchengedu/coursesignup/findall');
-          console.log("目标请求",isTargeturl,params.response.url,params)
+          console.log("目标请求",isTargeturl,params.response.url,params,source)
           if (!requestId) {
             console.error('Request ID not found in response params',params);
             return;
@@ -77,3 +89,4 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     });
   }
 });
+*/
