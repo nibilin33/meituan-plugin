@@ -5,10 +5,13 @@ import ReactDOM from "react-dom/client";
 import './content.css'
 import ContentApp from "./ContentApp";
 
+document.body.style.backgroundColor = 'lightblue';
 const root = document.createElement("div");
 root.id = "crx-root";
 document.body.appendChild(root);
-
+document.addEventListener('click', (event) => {
+  console.log('User clicked:', event.target);
+});
 console.log('hello world from content script');
 
 ReactDOM.createRoot(root).render(

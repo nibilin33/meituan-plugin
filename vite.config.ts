@@ -19,4 +19,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // 配置 @ 指向 src 目录
     },
   },
+  server: {
+    // Restrict CORS to only allow localhost
+    cors: {
+      origin: ['http://localhost:5173', 'http://localhost:3000'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      credentials: true
+    },
+    host: 'localhost',
+  },
 })
