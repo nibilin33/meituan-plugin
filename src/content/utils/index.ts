@@ -14,6 +14,22 @@ function waitForElement(selector: string, timeout = 5000) {
   });
 }
 
+// 轻量网络请求函数
+export async function fetchData(url: string, data: any) {
+  try {
+    await fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return data;
+  } catch (error) {
+    console.error("网络请求失败:", error);
+  }
+}
 async function scrapeData() {
   try {
     await waitForElement(".overview-index-card");
