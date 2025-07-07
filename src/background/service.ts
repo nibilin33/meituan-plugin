@@ -48,11 +48,18 @@ export async function injectBuildDomTree(tabId: number) {
     const alreadyInjected = await isScriptInjected(tabId);
     if (alreadyInjected) {
       console.log('Scripts already injected, skipping...');
+      return;
     }
+    // 动态注入脚本到网页上下文
     await chrome.scripting.executeScript({
-      target: { tabId },
-      files: ['request.js'],
-    });
+        target: { tabId },
+        func: () => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('request.js'); // 确保路径正确
+            script.onload = () => script.remove(); // 加载完成后移除脚本
+            document.documentElement.appendChild(script);
+        },
+     });
     console.log('Scripts successfully injected');
   } catch (err) {
     console.error('Failed to inject scripts:', err);

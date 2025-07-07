@@ -6,8 +6,6 @@
   "permissions": ["storage", "scripting", "tabs", "activeTab", "debugger", "webRequest","declarativeNetRequest"],
   "host_permissions": [
     "https://*.meituan.com/*",
-    "https://xczdkt200.xc.yuntaitec.com/*",
-    "https://console.ugiyu.com/*",
     "http://localhost:5173/*"
   ],
   "action": { "default_popup": "index.html" },
@@ -24,8 +22,7 @@
   "content_scripts": [
     {
       "js": ["src/content/content.tsx"],
-      "matches": ["https://*.meituan.com/*","https://xczdkt200.xc.yuntaitec.com/*",
-      "https://console.ugiyu.com/*"],
+      "matches": ["https://*.meituan.com/*"],
       "run_at": "document_idle"
     }
   ]
