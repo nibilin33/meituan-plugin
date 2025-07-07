@@ -76,4 +76,5 @@
 
 ## 效果
 
-<video src="https://github.com/nibilin33/meituan-plugin/raw/main/assets/effect.mp4" controls width="600"></video>
+![project effect](https://github.com/nibilin33/meituan-plugin/raw/main/assets/effect.gif)
+
