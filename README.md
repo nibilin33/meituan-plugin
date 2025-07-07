@@ -73,3 +73,6 @@
    ```
 
 2. 将 `.crx` 文件直接拖入浏览器窗口中，按照提示完成安装。
+
+## 效果
+<video src="assets/effect.mp4" controls width="600"></video>
